@@ -15,7 +15,6 @@ from pathlib import Path
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/4.2/howto/deployment/checklist/
 
@@ -26,6 +25,7 @@ SECRET_KEY = 'django-insecure-q&pilerj&7)hpbx47r%ix2f%7s80pb6$sl=+4_5@!$l#px9f=i
 DEBUG = True
 
 ALLOWED_HOSTS = []
+#ALLOWED_HOSTS = ['http://localhost:80','http://localhost:8060','http://localhost:8070','http://localhost:8080','http://localhost:8090']
 
 
 # Application definition
@@ -130,3 +130,9 @@ STATIC_URL = 'static/'
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+CSRF_EXEMPT_APPS = ['polls']
+CSRF_COOKIE_NAME = None
+CSRF_COOKIE_SECURE = False
+CSRF_COOKIE_HTTPONLY = False
+
