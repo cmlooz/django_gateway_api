@@ -25,7 +25,7 @@ SECRET_KEY = 'django-insecure-q&pilerj&7)hpbx47r%ix2f%7s80pb6$sl=+4_5@!$l#px9f=i
 DEBUG = True
 
 ALLOWED_HOSTS = []
-#ALLOWED_HOSTS = ['http://localhost:80','http://localhost:8060','http://localhost:8070','http://localhost:8080','http://localhost:8090']
+# ALLOWED_HOSTS = ['http://localhost:80','http://localhost:8060','http://localhost:8070','http://localhost:8080','http://localhost:8090']
 
 
 # Application definition
@@ -44,7 +44,7 @@ MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
-    'django.middleware.csrf.CsrfViewMiddleware',
+    # 'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
@@ -75,7 +75,7 @@ WSGI_APPLICATION = 'django_gateway_api.wsgi.application'
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
 
 DATABASES = {
-    'default_old': {
+    'default_dev': {
         'ENGINE': 'django.db.backends.sqlite3',
         'NAME': BASE_DIR / 'db.sqlite3',
     },
@@ -131,8 +131,7 @@ STATIC_URL = 'static/'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-CSRF_EXEMPT_APPS = ['polls']
-CSRF_COOKIE_NAME = None
-CSRF_COOKIE_SECURE = False
-CSRF_COOKIE_HTTPONLY = False
-
+# CSRF_EXEMPT_APPS = ['polls']
+# CSRF_COOKIE_NAME = None
+# CSRF_COOKIE_SECURE = False
+# CSRF_COOKIE_HTTPONLY = False

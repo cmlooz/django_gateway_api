@@ -1,9 +1,6 @@
 import json
 from django.db import models
 
-# Create your models here.
-
-
 class connection(models.Model):
     name = models.CharField(max_length=50)
     process = models.CharField(max_length=25, null=True)
