@@ -5,6 +5,63 @@ from django.db import migrations, models
 from ..models import connection
 
 
+def insert_connections(apps, schema_editor):
+    connection.objects.create(name="courses API GET", process="Courses", server="localhost",
+                              port=8090, method="GET", createdon=timezone.now(), createdby="jco",
+                              ind_activo=1, headers="{\"token\":\"_token\"}", body="{}", params="{\"id\":\"_id\"}")
+
+    connection.objects.create(name="courses API POST", process="Courses", server="localhost",
+                              port=8090, method="POST", createdon=timezone.now(), createdby="jco",
+                              ind_activo=1, headers="{\"token\":\"_token\"}", body="{\"process\":\"Courses\",\"action\":\"PostCourse\",\"data\":\"{ \"name\":\"_name\", \"description\":\"_description\", \"startdate\":\"_startdate\", \"enddate\":\"_enddate\", \"userid\":\"_userid\"}\",\"parameters\":\"{}\",\"userid\":\"_userid\"}",
+                              params="{}")
+
+    connection.objects.create(name="courses API PUT", process="Courses", server="localhost",
+                              port=8090, method="PUT", createdon=timezone.now(), createdby="jco",
+                              ind_activo=1, headers="{\"token\":\"_token\"}", body="{\"process\":\"Courses\",\"action\":\"PutCourse\",\"data\":\"{ \"name\":\"_name\", \"description\":\"_description\", \"startdate\":\"_startdate\", \"enddate\":\"_enddate\", \"userid\":\"_userid\"}\",\"parameters\":\"{}\",\"userid\":\"_userid\"}",
+                              params="{\"id\":\"_id\"}")
+
+    connection.objects.create(name="courses API DELETE", process="Courses", server="localhost",
+                              port=8090, method="DELETE", createdon=timezone.now(), createdby="jco",
+                              ind_activo=1, headers="{\"token\":\"_token\"}", body="{}", params="{\"id\":\"_id\"}")
+
+    connection.objects.create(name="resources API GET", process="Files", server="localhost",
+                              port=8080, method="GET", createdon=timezone.now(), createdby="jco",
+                              ind_activo=1, headers="{\"token\":\"_token\"}", body="{}", params="{\"id\":\"_id\"}")
+
+    connection.objects.create(name="resources API POST", process="Files", server="localhost",
+                              port=8080, method="POST", createdon=timezone.now(), createdby="jco",
+                              ind_activo=1, headers="{\"token\":\"_token\"}", body="{\"process\": \"Files\",\"action\": \"PostFile\",\"data\": \"{\"filename\": \"filename\",\"filedata\": \"base64/url\",\"class_id\": _class_id,\"class_order\": 0,\"userid\": \"_userid\"}\",\"parameters\": \"{}\"}",
+                              params="{}")
+
+    connection.objects.create(name="resources API PUT", process="Files", server="localhost",
+                              port=8080, method="PUT", createdon=timezone.now(), createdby="jco",
+                              ind_activo=1, headers="{\"token\":\"_token\"}", body="{\"process\": \"Files\",\"action\": \"PutFile\",\"data\": \"{\"filename\": \"filename\",\"filedata\": \"base64/url\",\"class_id\": _class_id,\"class_order\": 0,\"userid\": \"_userid\"}\",\"parameters\": \"{}\"}",
+                              params="{\"id\":\"_id\"}")
+
+    connection.objects.create(name="resources API DELETE", process="Files", server="localhost",
+                              port=8080, method="DELETE", createdon=timezone.now(), createdby="jco",
+                              ind_activo=1, headers="{\"token\":\"_token\"}", body="{}", params="{\"id\":\"_id\"}")
+
+    connection.objects.create(name="courses API GET", process="Courses", server="localhost",
+                              port=8090, method="GET", createdon=timezone.now(), createdby="jco",
+                              ind_activo=1, headers="{\"token\":\"_token\"}", body="{}", params="{\"id\":\"_id\"}")
+
+    connection.objects.create(name="classes API POST", process="Classes", server="localhost",
+                              port=8090, method="POST", createdon=timezone.now(), createdby="jco",
+                              ind_activo=1, headers="{\"token\":\"_token\"}", body="{\"process\":\"Classes\",\"action\":\"PostClass\",\"data\":\"{ \"name\":\"_name\", \"description\":\"_description\", \"content\":\"_content\", \"startdate\":\"_startdate\", \"userid\":\"_userid\"}\",\"parameters\":\"{\"id\":_id}\",\"userid\":\"_userid\"}",
+                              params="{}")
+
+    connection.objects.create(name="classes API PUT", process="Classes", server="localhost",
+                              port=8090, method="PUT", createdon=timezone.now(), createdby="jco",
+                              ind_activo=1, headers="{\"token\":\"_token\"}",
+                              body="{\"process\":\"Classes\",\"action\":\"PutClass\",\"data\":\"{ \"name\":\"_name\", \"description\":\"_description\", \"content\":\"_content\", \"startdate\":\"_startdate\", \"userid\":\"_userid\"}\",\"parameters\":\"{\"id\":_id}\",\"userid\":\"_userid\"}",
+                              params="{\"id\":\"_id\"}")
+
+    connection.objects.create(name="classes API DELETE", process="Classes", server="localhost",
+                              port=8090, method="DELETE", createdon=timezone.now(), createdby="jco",
+                              ind_activo=1, headers="{\"token\":\"_token\"}", body="{}", params="{\"id\":\"_id\"}")
+
+
 class Migration(migrations.Migration):
 
     dependencies = [
@@ -22,58 +79,7 @@ class Migration(migrations.Migration):
             name='process',
             field=models.CharField(max_length=25, null=True),
         ),
-        connection.objects.create(name="courses API GET", process="Courses", server="localhost",
-                                  port=8090, method="GET", createdon=timezone.now(), createdby="jco",
-                                  ind_activo=1, headers="{\"token\":\"_token\"}", body="{}", params="{\"id\":\"_id\"}"),
 
-        connection.objects.create(name="courses API POST", process="Courses", server="localhost",
-                                  port=8090, method="POST", createdon=timezone.now(), createdby="jco",
-                                  ind_activo=1, headers="{\"token\":\"_token\"}", body="{\"process\":\"Courses\",\"action\":\"PostCourse\",\"data\":\"{ \"name\":\"_name\", \"description\":\"_description\", \"startdate\":\"_startdate\", \"enddate\":\"_enddate\", \"userid\":\"_userid\"}\",\"parameters\":\"{}\",\"userid\":\"_userid\"}",
-                                  params="{}"),
+        migrations.RunPython(insert_connections)
 
-        connection.objects.create(name="courses API PUT", process="Courses", server="localhost",
-                                  port=8090, method="PUT", createdon=timezone.now(), createdby="jco",
-                                  ind_activo=1, headers="{\"token\":\"_token\"}", body="{\"process\":\"Courses\",\"action\":\"PutCourse\",\"data\":\"{ \"name\":\"_name\", \"description\":\"_description\", \"startdate\":\"_startdate\", \"enddate\":\"_enddate\", \"userid\":\"_userid\"}\",\"parameters\":\"{}\",\"userid\":\"_userid\"}",
-                                  params="{\"id\":\"_id\"}"),
-
-        connection.objects.create(name="courses API DELETE", process="Courses", server="localhost",
-                                  port=8090, method="DELETE", createdon=timezone.now(), createdby="jco",
-                                  ind_activo=1, headers="{\"token\":\"_token\"}", body="{}", params="{\"id\":\"_id\"}"),
-
-        connection.objects.create(name="resources API GET", process="Files", server="localhost",
-                                  port=8080, method="GET", createdon=timezone.now(), createdby="jco",
-                                  ind_activo=1, headers="{\"token\":\"_token\"}", body="{}", params="{\"id\":\"_id\"}"),
-
-        connection.objects.create(name="resources API POST", process="Files", server="localhost",
-                                  port=8080, method="POST", createdon=timezone.now(), createdby="jco",
-                                  ind_activo=1, headers="{\"token\":\"_token\"}", body="{\"process\": \"Files\",\"action\": \"PostFile\",\"data\": \"{\"filename\": \"filename\",\"filedata\": \"base64/url\",\"class_id\": _class_id,\"class_order\": 0,\"userid\": \"_userid\"}\",\"parameters\": \"{}\"}",
-                                  params="{}"),
-
-        connection.objects.create(name="resources API PUT", process="Files", server="localhost",
-                                  port=8080, method="PUT", createdon=timezone.now(), createdby="jco",
-                                  ind_activo=1, headers="{\"token\":\"_token\"}", body="{\"process\": \"Files\",\"action\": \"PutFile\",\"data\": \"{\"filename\": \"filename\",\"filedata\": \"base64/url\",\"class_id\": _class_id,\"class_order\": 0,\"userid\": \"_userid\"}\",\"parameters\": \"{}\"}",
-                                  params="{\"id\":\"_id\"}"),
-
-        connection.objects.create(name="resources API DELETE", process="Files", server="localhost",
-                                  port=8080, method="DELETE", createdon=timezone.now(), createdby="jco",
-                                  ind_activo=1, headers="{\"token\":\"_token\"}", body="{}", params="{\"id\":\"_id\"}"),
-
-        connection.objects.create(name="courses API GET", process="Courses", server="localhost",
-                                  port=8090, method="GET", createdon=timezone.now(), createdby="jco",
-                                  ind_activo=1, headers="{\"token\":\"_token\"}", body="{}", params="{\"id\":\"_id\"}"),
-
-        connection.objects.create(name="classes API POST", process="Classes", server="localhost",
-                                  port=8090, method="POST", createdon=timezone.now(), createdby="jco",
-                                  ind_activo=1, headers="{\"token\":\"_token\"}", body="{\"process\":\"Classes\",\"action\":\"PostClass\",\"data\":\"{ \"name\":\"_name\", \"description\":\"_description\", \"content\":\"_content\", \"startdate\":\"_startdate\", \"userid\":\"_userid\"}\",\"parameters\":\"{\"id\":_id}\",\"userid\":\"_userid\"}",
-                                  params="{}"),
-
-        connection.objects.create(name="classes API PUT", process="Classes", server="localhost",
-                                  port=8090, method="PUT", createdon=timezone.now(), createdby="jco",
-                                  ind_activo=1, headers="{\"token\":\"_token\"}",
-                                  body="{\"process\":\"Classes\",\"action\":\"PutClass\",\"data\":\"{ \"name\":\"_name\", \"description\":\"_description\", \"content\":\"_content\", \"startdate\":\"_startdate\", \"userid\":\"_userid\"}\",\"parameters\":\"{\"id\":_id}\",\"userid\":\"_userid\"}",
-                                  params="{\"id\":\"_id\"}"),
-
-        connection.objects.create(name="classes API DELETE", process="Classes", server="localhost",
-                                  port=8090, method="DELETE", createdon=timezone.now(), createdby="jco",
-                                  ind_activo=1, headers="{\"token\":\"_token\"}", body="{}", params="{\"id\":\"_id\"}"),
     ]
