@@ -1,6 +1,7 @@
 from django.core.handlers.wsgi import WSGIRequest
 from django.http import HttpResponse
 from django.http import JsonResponse
+from django.http import HttpResponseBadRequest
 from django.views.decorators.csrf import csrf_exempt
 from .models import connection
 import django_gateway_api
@@ -10,34 +11,39 @@ import base64
 
 
 def handler(request, process, action, *args, **kwargs):
-    print(request)
+    print('handler req', request)
     params = json.loads(request.body)
     try:
         id_req = json.loads(params['parameters'])['id']
     except:
         id_req = ""
 
-    if request.method == 'POST':
-        return post(request, process, action, *args, **kwargs)
-    elif request.method == 'PUT':
-        return post(request, process, action, str(id_req), *args, **kwargs)
-    elif request.method == 'GET':
-        return get(request, process, action, str(id_req), *args, **kwargs)
-    elif request.method == 'DELETE':
-        return delete(request, process, action, str(id_req), *args, **kwargs)
+    try:
+        if request.method == 'POST':
+            return post(request, process, action, *args, **kwargs)
+        elif request.method == 'PUT':
+            return post(request, process, action, str(id_req), *args, **kwargs)
+        elif request.method == 'GET':
+            return get(request, process, action, str(id_req), *args, **kwargs)
+        elif request.method == 'DELETE':
+            return delete(request, process, action, str(id_req), *args, **kwargs)
+    except Exception as e:
+        print(f"Error: {e}")
+        # TODO: Must save the error log
+        return HttpResponseBadRequest(e)
 
 # @csrf_exempt
 
 
 def post(request, process, action, *args, **kwargs):
     data = json.loads(request.body)
-    token = auth_token(data['user'], process, action)
+    token = auth_token(data['userid'], process, action)
     post_data = {
         'process': data['process'],
         'action': data['action'],
         'data': data['data'],
-        'parameters': data['parameters'],
-        'user': data['user'],
+        'parameters': data['params'],
+        'userid': data['userid'],
     }
 
     conn = getConnectionString(
@@ -45,7 +51,8 @@ def post(request, process, action, *args, **kwargs):
     response = requests.post(url=conn,
                              data=json.dumps(post_data),
                              headers={'Content-Type': 'application/json'},
-                             auth=('admin', token))
+                             auth=('admin', token),
+                             params=request.params)
     return HttpResponse(response.content)
 
 # @csrf_exempt
@@ -53,13 +60,13 @@ def post(request, process, action, *args, **kwargs):
 
 def put(request, process, action, id_req, *args, **kwargs):
     data = json.loads(request.body)
-    token = auth_token(data['user'], process, action)
+    token = auth_token(data['userid'], process, action)
     put_data = {
         'process': data['process'],
         'action': data['action'],
         'data': data['data'],
-        'parameters': data['parameters'],
-        'user': data['user'],
+        'parameters': data['params'],
+        'userid': data['userid'],
     }
 
     conn = getConnectionString(
@@ -75,14 +82,14 @@ def put(request, process, action, id_req, *args, **kwargs):
 
 def get(request, process, action, id_req, *args, **kwargs):
     data = json.loads(request.body)
-    token = auth_token(data['user'], process, action)
+    token = auth_token(data['userid'], process, action)
     try:
         get_data = {
             'process': data['process'],
             'action': data['action'],
             'data': data['data'],
-            'parameters': data['parameters'],
-            'user': data['user'],
+            'parameters': data['params'],
+            'userid': data['userid'],
         }
     except:
         get_data = {
@@ -103,13 +110,13 @@ def get(request, process, action, id_req, *args, **kwargs):
 
 def delete(request, process, action, id_req, *args, **kwargs):
     data = json.loads(request.body)
-    token = auth_token(data['user'], process, action)
+    token = auth_token(data['userid'], process, action)
     delete_data = {
         'process': data['process'],
         'action': data['action'],
         'data': data['data'],
-        'parameters': data['parameters'],
-        'user': data['user'],
+        'parameters': data['params'],
+        'userid': data['userid'],
     }
 
     conn = getConnectionString(
@@ -133,8 +140,8 @@ def getConnectionString(method, process, action, id_req, params):
     return "".join(list)
 
 
-def auth_token(user, process, action):
-    # TODO: Must send the request to the auth provider to get the token for the user and check if has permission to the requested url
+def auth_token(userid, process, action):
+    # TODO: Must send the request to the auth provider to get the token for the userid and check if has permission to the requested url
     try:
         authorized = True
     except:
