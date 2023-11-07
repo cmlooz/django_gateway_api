@@ -1,20 +1,7 @@
-apiVersion: v1
-kind: Service
-metadata:
-  name: django-gateway-api
-spec:
-  selector:
-    app: django-gateway-api
-  ports:
-    - protocol: TCP
-      port: 8070
-      targetPort: 80
-  type: LoadBalancer
----
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: django-gateway-api
+  name: django-gateway-api-deployment
 spec:
   selector:
     matchLabels:
@@ -25,7 +12,45 @@ spec:
         app: django-gateway-api
     spec:
       containers:
-        - name: django-gateway-api
+        - name: django-gateway-api-container
           image: jcortizs/django_gateway_api
           ports:
-            - containerPort: 80
+            - containerPort: 8070
+            - containerPort: 1544
+            - containerPort: 8080
+            - containerPort: 8090
+            - containerPort: 8060
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: django-gateway-api-service
+spec:
+  selector:
+    app: django-gateway-api
+  #  ports:
+  #    - protocol: TCP
+  #      port: 8070
+  #      targetPort: 8070
+  ports:
+    - name: http
+      protocol: TCP
+      port: 8070
+      targetPort: 8070
+    - name: port-1544
+      protocol: TCP
+      port: 1544
+      targetPort: 1544
+    - name: dotnet-resources-api
+      protocol: TCP
+      port: 8080
+      targetPort: 8080
+    - name: nodejs-courses-api
+      protocol: TCP
+      port: 8090
+      targetPort: 8090
+    - name: laravel-auth-api
+      protocol: TCP
+      port: 8060
+      targetPort: 8060
+  type: LoadBalancer

@@ -1,0 +1,24 @@
+FROM python:3.9
+ENV PYTHONUNBUFFERED 1
+ENV PYTHONDONTWRITEBYTECODE 1
+WORKDIR /app
+RUN pip install django==4.2.5
+RUN pip install requests
+COPY . /app/
+RUN python manage.py makemigrations polls
+RUN python manage.py sqlmigrate polls 0001
+RUN python manage.py sqlmigrate polls 0002
+RUN python manage.py migrate
+#RUN python manage.py createsuperuser --username admin --email juan.ortiz.sanchez@correounivalle.edu.co
+#HTTP
+EXPOSE 8070
+#DATABASE
+EXPOSE 1544
+#FOR RESOURCES API
+EXPOSE 8080
+#FOR COURSES API
+EXPOSE 8090
+#FOR AUTH API
+EXPOSE 8060
+ENTRYPOINT ["python", "manage.py"]
+CMD ["runserver", "0.0.0.0:8070"]

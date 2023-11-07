@@ -1,0 +1,10 @@
+version: '0.0.1'
+services:
+  gateway-api-service:
+    image: jcortizs/django_gateway_api
+    ports:
+      - "8070:8070"
+      - "1544:1544"
+      - "8080:8080"
+      - "8090:8090"
+      - "8060:8060"

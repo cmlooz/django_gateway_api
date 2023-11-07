@@ -11,38 +11,48 @@ import base64
 
 
 def handler(request, process, action, *args, **kwargs):
-    print('handler req', request)
+    print('handler request: ', request)
     params = json.loads(request.body)
     try:
         id_req = json.loads(params['parameters'])['id']
     except:
         id_req = ""
 
+    response = None
+
     try:
         if request.method == 'POST':
-            return post(request, process, action, *args, **kwargs)
+            response = post(request, process, action, *args, **kwargs)
         elif request.method == 'PUT':
-            return post(request, process, action, str(id_req), *args, **kwargs)
+            response = post(request, process, action,
+                            str(id_req), *args, **kwargs)
         elif request.method == 'GET':
-            return get(request, process, action, str(id_req), *args, **kwargs)
+            response = get(request, process, action,
+                           str(id_req), *args, **kwargs)
         elif request.method == 'DELETE':
-            return delete(request, process, action, str(id_req), *args, **kwargs)
+            response = delete(request, process, action,
+                              str(id_req), *args, **kwargs)
     except Exception as e:
         print(f"Error: {e}")
         # TODO: Must save the error log
         return HttpResponseBadRequest(e)
+
+    print('handler response: ', response)
+    return HttpResponse(response.content)
+
 
 # @csrf_exempt
 
 
 def post(request, process, action, *args, **kwargs):
     data = json.loads(request.body)
+
     token = auth_token(data['userid'], process, action)
     post_data = {
         'process': data['process'],
         'action': data['action'],
         'data': data['data'],
-        'parameters': data['params'],
+        'parameters': data['parameters'],
         'userid': data['userid'],
     }
 
@@ -52,8 +62,8 @@ def post(request, process, action, *args, **kwargs):
                              data=json.dumps(post_data),
                              headers={'Content-Type': 'application/json'},
                              auth=('admin', token),
-                             params=request.params)
-    return HttpResponse(response.content)
+                             params=json.dumps(data['parameters']))
+    return response
 
 # @csrf_exempt
 
@@ -65,7 +75,7 @@ def put(request, process, action, id_req, *args, **kwargs):
         'process': data['process'],
         'action': data['action'],
         'data': data['data'],
-        'parameters': data['params'],
+        'parameters': data['parameters'],
         'userid': data['userid'],
     }
 
@@ -74,8 +84,9 @@ def put(request, process, action, id_req, *args, **kwargs):
     response = requests.put(url=conn,
                             data=json.dumps(put_data),
                             headers={'Content-Type': 'application/json'},
-                            auth=('admin', token))
-    return HttpResponse(response.content)
+                            auth=('admin', token),
+                            params=json.dumps(data['parameters']))
+    return response
 
 # @csrf_exempt
 
@@ -88,7 +99,7 @@ def get(request, process, action, id_req, *args, **kwargs):
             'process': data['process'],
             'action': data['action'],
             'data': data['data'],
-            'parameters': data['params'],
+            'parameters': data['parameters'],
             'userid': data['userid'],
         }
     except:
@@ -101,9 +112,9 @@ def get(request, process, action, id_req, *args, **kwargs):
     response = requests.get(url=conn,
                             data=json.dumps(get_data),
                             headers={'Content-Type': 'application/json'},
-                            auth=('admin', token))
-    print(response)
-    return HttpResponse(response.content)
+                            auth=('admin', token),
+                            params=json.dumps(data['parameters']))
+    return response
 
 # @csrf_exempt
 
@@ -115,7 +126,7 @@ def delete(request, process, action, id_req, *args, **kwargs):
         'process': data['process'],
         'action': data['action'],
         'data': data['data'],
-        'parameters': data['params'],
+        'parameters': data['parameters'],
         'userid': data['userid'],
     }
 
@@ -124,30 +135,45 @@ def delete(request, process, action, id_req, *args, **kwargs):
     response = requests.delete(url=conn,
                                data=json.dumps(delete_data),
                                headers={'Content-Type': 'application/json'},
-                               auth=('admin', token))
+                               auth=('admin', token),
+                               params=json.dumps(data['parameters']))
 
-    return HttpResponse(response.content)
+    return response
 
 
 def getConnectionString(method, process, action, id_req, params):
     conn = connection.objects.get(method=method, process=process, ind_activo=1)
-    list = ["http://", conn.server, ":",
-            str(conn.port), "/api/", process, "/", action]
+    list = ["http://", conn.server]
+
+    if conn.port > 0 and len(str(conn.port)) > 0:
+        list.append("".join([":", str(conn.port)]))
+
+    list.append("".join(["/api/", process, "/", action]))
+
     if id_req is not None and len(id_req) > 0:  # and id_req != "0":
         list.append("".join(["/", str(id_req)]))
     if params is not None and len(params) > 0:
         list.append("?" % params)
-    return "".join(list)
+
+    url = "".join(list)
+
+    return url
 
 
 def auth_token(userid, process, action):
     # TODO: Must send the request to the auth provider to get the token for the userid and check if has permission to the requested url
+
     try:
         authorized = True
     except:
         authorized = False
 
     if (authorized):
-        return base64.b64encode(process.encode('utf-8')).decode('utf-8')
+        if (process == 'Courses' or process == 'Classes'):
+            return 'nodejs_courses_api'
+        elif (process == 'Files'):
+            return 'dotnet_resources_api'
+        else:
+            return base64.b64encode(process.encode('utf-8')).decode('utf-8')
     else:
         return ''

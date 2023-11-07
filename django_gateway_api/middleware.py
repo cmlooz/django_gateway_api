@@ -86,7 +86,7 @@ class BodyValidationMiddleware:
 
             request._body = json.dumps(body).encode('utf-8')
 
-            request._params = parameters_to_send
+            request._parameters = parameters_to_send
 
             response = self.get_response(request)
 
