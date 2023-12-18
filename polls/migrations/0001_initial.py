@@ -34,4 +34,21 @@ class Migration(migrations.Migration):
                 'db_table': 'connections',
             },
         ),
+        migrations.CreateModel(
+            name='eventlog',
+            fields=[
+                ('rowid', models.AutoField(primary_key=True, serialize=False)),
+                ('process', models.CharField(max_length=30)),
+                ('action', models.CharField(max_length=30)),
+                ('rowid_entity', models.IntegerField(default=0)),
+                ('userid', models.CharField(max_length=30)),
+                ('regdate', models.DateTimeField(auto_now_add=True)),
+                ('request', models.TextField()),
+                ('response', models.TextField(null=True)),
+                ('errors', models.TextField(null=True)),
+            ],
+            options={
+                'db_table': 'eventlogs',
+            },
+        ),
     ]

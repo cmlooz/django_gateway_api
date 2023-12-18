@@ -50,7 +50,9 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-    'django_gateway_api.middleware.BodyValidationMiddleware'
+    'django_gateway_api.middleware.BodyValidationMiddleware',
+    'request_logging.middleware.LoggingMiddleware',
+    'django_gateway_api.middleware.RequestLogMiddleware'
 ]
 
 ROOT_URLCONF = 'django_gateway_api.urls'
@@ -132,3 +134,20 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 # CSRF_EXEMPT_APPS = ['polls']
 # CSRF_EXEMPT_APPS = ['api']
+
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'handlers': {
+        'console': {
+            'class': 'logging.StreamHandler',
+        },
+    },
+    'loggers': {
+        'django.request': {
+            'handlers': ['console'],
+            'level': 'DEBUG',  # change debug level as appropiate
+            'propagate': False,
+        },
+    },
+}

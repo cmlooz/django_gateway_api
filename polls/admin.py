@@ -2,6 +2,7 @@ from django.contrib import admin
 
 # Register your models here.
 from .models import connection
+from .models import eventlog
 
 
 class connectionAdmin(admin.ModelAdmin):
@@ -16,3 +17,28 @@ class connectionAdmin(admin.ModelAdmin):
 
 
 admin.site.register(connection, connectionAdmin)
+
+
+class eventlogAdmin(admin.ModelAdmin):
+    fieldsets = [
+        (None, {"fields": ["process",
+                           "action",
+                           "rowid_entity",
+                           "request",
+                           "response",
+                           "errors"]}),
+        ("Date information", {"fields": [
+         "userid"]}),
+    ]
+    list_display = ["rowid",
+                    "process",
+                    "action",
+                    "rowid_entity",
+                    "request",
+                    "response",
+                    "errors",
+                    "regdate",
+                    "userid"]
+
+
+admin.site.register(eventlog, eventlogAdmin)

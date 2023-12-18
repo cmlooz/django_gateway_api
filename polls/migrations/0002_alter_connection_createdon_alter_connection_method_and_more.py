@@ -8,58 +8,58 @@ from ..models import connection
 def insert_connections(apps, schema_editor):
     connection.objects.create(name='courses API GET', process='Courses', action='action', server='nodejs-courses-api-service',
                               port=8090, method='GET', createdon=timezone.now(), createdby='jco',
-                              ind_activo=1, headers='{\"token\":\"_token\"}', body='{}', params='{\"id\":\"_id\"}')
+                              ind_activo=1, headers='{\"Authorization\":\"_basic\"}', body='{}', params='{\"id\":\"_id\"}')
 
     connection.objects.create(name='courses API POST', process='Courses', action='PostCourse', server='nodejs-courses-api-service',
                               port=8090, method='POST', createdon=timezone.now(), createdby='jco',
-                              ind_activo=1, headers='{\"token\":\"_token\"}', body='{ \"name\":\"_name\", \"description\":\"_description\", \"startdate\":\"_startdate\", \"enddate\":\"_enddate\", \"userid\":\"_userid\"}',
+                              ind_activo=1, headers='{\"Authorization\":\"_basic\"}', body='{ \"name\":\"_name\", \"description\":\"_description\", \"startdate\":\"_startdate\", \"enddate\":\"_enddate\", \"userid\":\"_userid\"}',
                               params='{}')
 
     connection.objects.create(name='courses API PUT', process='Courses', action='PutCourse', server='nodejs-courses-api-service',
                               port=8090, method='PUT', createdon=timezone.now(), createdby='jco',
-                              ind_activo=1, headers='{\"token\":\"_token\"}', body='{\"name\":\"_name\", \"description\":\"_description\", \"startdate\":\"_startdate\", \"enddate\":\"_enddate\", \"userid\":\"_userid\"}',
+                              ind_activo=1, headers='{\"Authorization\":\"_basic\"}', body='{\"name\":\"_name\", \"description\":\"_description\", \"startdate\":\"_startdate\", \"enddate\":\"_enddate\", \"userid\":\"_userid\"}',
                               params='{\"id\":\"_id\"}')
 
     connection.objects.create(name='courses API DELETE', process='Courses', action='DeleteCourse', server='nodejs-courses-api-service',
                               port=8090, method='DELETE', createdon=timezone.now(), createdby='jco',
-                              ind_activo=1, headers='{\"token\":\"_token\"}', body='{}', params='{\"id\":\"_id\"}')
+                              ind_activo=1, headers='{\"Authorization\":\"_basic\"}', body='{}', params='{\"id\":\"_id\"}')
 
     connection.objects.create(name='resources API GET', process='Files', action='action', server='dotnet-resources-api-service',
                               port=8080, method='GET', createdon=timezone.now(), createdby='jco',
-                              ind_activo=1, headers='{\"token\":\"_token\"}', body='{}', params='{\"id\":\"_id\"}')
+                              ind_activo=1, headers='{\"Authorization\":\"_basic\"}', body='{}', params='{\"id\":\"_id\"}')
 
     connection.objects.create(name='resources API POST', process='Files', action='PostFile', server='dotnet-resources-api-service',
                               port=8080, method='POST', createdon=timezone.now(), createdby='jco',
-                              ind_activo=1, headers='{\"token\":\"_token\"}', body='{\"filename\": \"filename\",\"filedata\": \"base64/url\",\"class_id\": _class_id,\"class_order\": 0,\"userid\": \"_userid\"}}',
+                              ind_activo=1, headers='{\"Authorization\":\"_basic\"}', body='{\"filename\": \"filename\",\"filedata\": \"base64/url\",\"class_id\": _class_id,\"class_order\": 0,\"userid\": \"_userid\"}}',
                               params='{}')
 
     connection.objects.create(name='resources API PUT', process='Files', action='PutFile', server='dotnet-resources-api-service',
                               port=8080, method='PUT', createdon=timezone.now(), createdby='jco',
-                              ind_activo=1, headers='{\"token\":\"_token\"}', body='{\"filename\": \"filename\",\"filedata\": \"base64/url\",\"class_id\": _class_id,\"class_order\": 0,\"userid\": \"_userid\"}',
+                              ind_activo=1, headers='{\"Authorization\":\"_basic\"}', body='{\"filename\": \"filename\",\"filedata\": \"base64/url\",\"class_id\": _class_id,\"class_order\": 0,\"userid\": \"_userid\"}',
                               params='{\"id\":\"_id\"}')
 
     connection.objects.create(name='resources API DELETE', process='Files', action='DeleteFile', server='dotnet-resources-api-service',
                               port=8080, method='DELETE', createdon=timezone.now(), createdby='jco',
-                              ind_activo=1, headers='{\"token\":\"_token\"}', body='{}', params='{\"id\":\"_id\"}')
+                              ind_activo=1, headers='{\"Authorization\":\"_basic\"}', body='{}', params='{\"id\":\"_id\"}')
 
     connection.objects.create(name='classes API GET', process='Classes', action='action', server='nodejs-courses-api-service',
                               port=8090, method='GET', createdon=timezone.now(), createdby='jco',
-                              ind_activo=1, headers='{\"token\":\"_token\"}', body='{}', params='{\"id\":\"_id\"}')
+                              ind_activo=1, headers='{\"Authorization\":\"_basic\"}', body='{}', params='{\"id\":\"_id\"}')
 
     connection.objects.create(name='classes API POST', process='Classes', action='PostClass', server='nodejs-courses-api-service',
                               port=8090, method='POST', createdon=timezone.now(), createdby='jco',
-                              ind_activo=1, headers='{\"token\":\"_token\"}', body='{ \"name\":\"_name\", \"description\":\"_description\", \"content\":\"_content\", \"startdate\":\"_startdate\", \"userid\":\"_userid\"}',
+                              ind_activo=1, headers='{\"Authorization\":\"_basic\"}', body='{ \"name\":\"_name\", \"description\":\"_description\", \"content\":\"_content\", \"startdate\":\"_startdate\", \"userid\":\"_userid\"}',
                               params='{}')
 
     connection.objects.create(name='classes API PUT', process='Classes', action='PutClass', server='nodejs-courses-api-service',
                               port=8090, method='PUT', createdon=timezone.now(), createdby='jco',
-                              ind_activo=1, headers='{\"token\":\"_token\"}',
+                              ind_activo=1, headers='{\"Authorization\":\"_basic\"}',
                               body='{ \"name\":\"_name\", \"description\":\"_description\", \"content\":\"_content\", \"startdate\":\"_startdate\", \"userid\":\"_userid\"}',
                               params='{\"id\":\"_id\"}')
 
     connection.objects.create(name='classes API DELETE', process='Classes', action='DeleteClass', server='nodejs-courses-api-service',
                               port=8090, method='DELETE', createdon=timezone.now(), createdby='jco',
-                              ind_activo=1, headers='{\"token\":\"_token\"}', body='{}', params='{\"id\":\"_id\"}')
+                              ind_activo=1, headers='{\"Authorization\":\"_basic\"}', body='{}', params='{\"id\":\"_id\"}')
 
 
 class Migration(migrations.Migration):
@@ -78,6 +78,11 @@ class Migration(migrations.Migration):
             model_name='connection',
             name='process',
             field=models.CharField(max_length=25, null=True),
+        ),
+        migrations.AlterField(
+            model_name='connection',
+            name='createdon',
+            field=models.DateTimeField(null=True),
         ),
 
         migrations.RunPython(insert_connections)

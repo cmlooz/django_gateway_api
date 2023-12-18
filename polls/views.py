@@ -4,7 +4,7 @@ from django.http import JsonResponse
 from django.http import HttpResponseBadRequest
 from django.views.decorators.csrf import csrf_exempt
 from .models import connection
-import django_gateway_api
+from .models import eventlog
 import requests
 import json
 import base64
@@ -18,7 +18,14 @@ def handler(request, process, action, *args, **kwargs):
     except:
         id_req = ""
 
+    try:
+        userid = params['userid']
+    except:
+        userid = ""
+
     response = None
+
+    errors = None
 
     try:
         if request.method == 'POST':
@@ -34,8 +41,22 @@ def handler(request, process, action, *args, **kwargs):
                               str(id_req), *args, **kwargs)
     except Exception as e:
         print(f"Error: {e}")
-        # TODO: Must save the error log
+
+        # try:
+        #    event = eventlog.objects.create(process=process, action=action, rowid_entity=id_req, userid=userid,
+        #                                    request=json.dumps(request), response=None, errors=e)
+        #    print(f"Log saved: {event}")
+        # except Exception as eventError:
+        #    print(f"Log error: {eventError}")
+
         return HttpResponseBadRequest(e)
+
+    # try:
+    #    event = eventlog.objects.create(process=process, action=action, rowid_entity=id_req, userid=userid,
+    #                                    request=json.dumps(request), response=json.dumps(response), errors=None)
+    #    print(f"Log saved: {event}")
+    # except Exception as eventError:
+    #    print(f"Log error: {eventError}")
 
     print('handler response: ', response)
     return HttpResponse(response.content)

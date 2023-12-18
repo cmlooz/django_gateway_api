@@ -1,6 +1,7 @@
 import json
 from django.db import models
 
+
 class connection(models.Model):
     name = models.CharField(max_length=50)
     process = models.CharField(max_length=25, null=True)
@@ -44,4 +45,34 @@ class connection(models.Model):
             "ind_activo": self.ind_activo,
             "modifiedby": self.modifiedby,
             "modifiedon": modifiedon_str
+        })
+
+
+class eventlog(models.Model):
+    rowid = models.AutoField(primary_key=True)
+    process = models.CharField(max_length=30, null=False)
+    action = models.CharField(max_length=30, null=False)
+    rowid_entity = models.IntegerField(default=0)
+    userid = models.CharField(max_length=30, null=False)
+    regdate = models.DateTimeField(auto_now_add=True)
+    request = models.TextField(null=False)
+    response = models.TextField(null=True)
+    errors = models.TextField(null=True)
+
+    class Meta:
+        db_table = 'eventlogs'
+
+    def __str__(self):
+        regdate_str = self.regdate.strftime('%Y-%m-%d %h:%m:%s')
+
+        return json.dumps({
+            "rowid": self.rowid,
+            "process": self.process,
+            "action": self.action,
+            "rowid_entity": self.rowid_entity,
+            "userid": self.userid,
+            "regdate": regdate_str,
+            "request": self.request,
+            "response": self.response,
+            "errors": self.errors
         })

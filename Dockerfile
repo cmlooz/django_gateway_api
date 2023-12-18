@@ -1,14 +1,13 @@
 FROM ubuntu:20.04
 RUN apt-get update && apt-get install -y tzdata && apt install -y python3.9 python3-pip
 RUN apt install python3-dev -y
-RUN pip install django==4.2.5 requests
+RUN pip install django==4.2.5 requests django-request-logging
 ADD . /app
 WORKDIR /app
 RUN python3 manage.py makemigrations polls
 RUN python3 manage.py sqlmigrate polls 0001
 RUN python3 manage.py sqlmigrate polls 0002
 RUN python3 manage.py migrate
-#RUN python3 manage.py createsuperuser --username admin --email juan.ortiz.sanchez@correounivalle.edu.co
 RUN python3 manage.py shell -c "from django.contrib.auth import get_user_model; User = get_user_model(); User.objects.create_superuser('admin', 'juan.ortiz.sanchez@correounivalle.edu.co', 'HDLCrin8*')"
 
 #HTTP
